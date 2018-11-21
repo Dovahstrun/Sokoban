@@ -1,0 +1,27 @@
+//Project Includes
+
+#include "GridObject.h"
+#include "Level.h"
+
+GridObject::GridObject()
+	: SpriteObject()
+	, m_gridPosition()
+	, m_level(nullptr)
+{
+}
+
+void GridObject::setGridPosition(sf::Vector2i _newPosition)
+{
+	m_gridPosition = _newPosition;
+	m_sprite.setPosition(m_gridPosition.x * m_level->getCellSize(), m_gridPosition.y * m_level->getCellSize());
+}
+
+void GridObject::setGridPosition(int _x, int _y)
+{
+	setGridPosition(sf::Vector2i(_x, _y));
+}
+
+void GridObject::setLevel(Level * _newLevel)
+{
+	m_level = _newLevel;
+}

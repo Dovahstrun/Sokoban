@@ -129,8 +129,10 @@
     <ClCompile Include="Framework\Sources\GameObject.cpp" />
     <ClCompile Include="Framework\Sources\SpriteObject.cpp" />
     <ClCompile Include="Framework\Sources\TextObject.cpp" />
+    <ClCompile Include="GridObject.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Headers\Animation.h" />
@@ -139,7 +141,9 @@
     <ClInclude Include="Framework\Headers\GameObject.h" />
     <ClInclude Include="Framework\Headers\SpriteObject.h" />
     <ClInclude Include="Framework\Headers\TextObject.h" />
+    <ClInclude Include="GridObject.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
