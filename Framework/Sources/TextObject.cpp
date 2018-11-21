@@ -1,5 +1,5 @@
 // Project Includes
-#include "TextObject.h"
+#include "../Headers/TextObject.h"
 
 TextObject::TextObject()
 	: GameObject() // Always initialise your parent class in your constructor

@@ -1,6 +1,6 @@
 
 // Project Includes
-#include "SpriteObject.h"
+#include "../Headers/SpriteObject.h"
 
 SpriteObject::SpriteObject()
 	: GameObject() // Always initialise your parent class in your constructor

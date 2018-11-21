@@ -1,5 +1,5 @@
 // Project Includes
-#include "GameObject.h"
+#include "../Headers/GameObject.h"
 
 GameObject::GameObject()
 	: m_active(true)
