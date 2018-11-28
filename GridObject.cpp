@@ -25,3 +25,8 @@ void GridObject::setLevel(Level * _newLevel)
 {
 	m_level = _newLevel;
 }
+
+sf::Vector2i GridObject::getGridPosition()
+{
+	return m_gridPosition;
+}

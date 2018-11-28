@@ -7,6 +7,8 @@
 #include "Level.h"
 #include "Framework/Headers/AssetManager.h"
 #include "Wall.h"
+#include "Storage.h"
+#include "Player.h"
 
 Level::Level()
 	: m_cellSize(64.0f)
@@ -57,6 +59,20 @@ void Level::Draw(sf::RenderTarget & _target)
 void Level::Update(sf::Time _frameTime)
 {
 	
+}
+
+void Level::Input(sf::Event _gameEvent)
+{
+	for (int y = 0; y < m_contents.size(); ++y)//rows
+	{
+		for (int x = 0; x < m_contents[y].size(); ++x)//cells
+		{
+			for (int z = 0; z < m_contents[y][x].size(); ++z) //Sticky outies (grid objects)
+			{
+				m_contents[y][x][z]->Input(_gameEvent);
+			}
+		}
+	}
 }
 
 void Level::loadLevel(int _levelToLoad)
@@ -145,6 +161,20 @@ void Level::loadLevel(int _levelToLoad)
 				wall->setGridPosition(x, y);
 				m_contents[y][x].push_back(wall);
 			}
+			else if (ch == 'S')
+			{
+				Storage* storage = new Storage();
+				storage->setLevel(this);
+				storage->setGridPosition(x, y);
+				m_contents[y][x].push_back(storage);
+			}
+			else if (ch == 'P')
+			{
+				Player* player = new Player();
+				player->setLevel(this);
+				player->setGridPosition(x, y);
+				m_contents[y][x].push_back(player);
+			}
 			else
 			{
 				std::cerr << "Unrecognised character in level file: " << ch;
@@ -173,4 +203,44 @@ int Level::GetCurrentLevel()
 int Level::getCellSize()
 {
 	return m_cellSize;
+}
+
+bool Level::MoveObjectTo(GridObject * _toMove, sf::Vector2i _targetPos)
+{
+	//Don't trust other code. Make sure _toMove is a valid pointer
+	if (_toMove != nullptr 
+		&& _targetPos.y >= 0 && _targetPos.y < m_contents.size() 
+		&& _targetPos.x >= 0 && _targetPos.x < m_contents[_targetPos.y].size())
+	{
+
+		//Get the current position of our grid object
+		sf::Vector2i oldPos = _toMove->getGridPosition();
+
+		//Find the object in the list using an iterator and the find method
+		auto it = std::find(m_contents[oldPos.y][oldPos.x].begin(),
+			m_contents[oldPos.y][oldPos.x].end(),
+			_toMove);
+
+		//If we found the object at this location, it will NO equal the end of the vector
+		if (it != m_contents[oldPos.y][oldPos.x].end())
+		{
+			//We found the object!
+
+			//Remove it from the old position
+			m_contents[oldPos.y][oldPos.x].erase(it);
+
+			//Add it to its new position
+			m_contents[_targetPos.y][_targetPos.x].push_back(_toMove);
+
+			//Tell the object its new position
+			_toMove->setGridPosition(_targetPos);
+
+			//Return success
+			return true;
+
+		}
+	}
+
+	//return failure
+	return false;
 }
