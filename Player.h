@@ -12,9 +12,14 @@ public:
 
 	//Overriding Functions
 	void Input(sf::Event _gameEvent);
+	void Update(sf::Time _frameTime);
 
 private:
 
 	bool AttemptMove(sf::Vector2i _direction);
+
+private:
+
+	sf::Vector2i m_pendingMove;
 
 };

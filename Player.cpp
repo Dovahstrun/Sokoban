@@ -16,35 +16,53 @@ void Player::Input(sf::Event _gameEvent)
 	//was the event a key press
 	if (_gameEvent.type == sf::Event::KeyPressed)
 	{
-		//Yes it was a key press
+		// Yes it was a key press!
 
-		//what key was pressed
+		// What key was pressed?
 		if (_gameEvent.key.code == sf::Keyboard::W)
 		{
-			//It was W
-			//Move up
-			AttemptMove(sf::Vector2i(0, -1));
+			// It was W!
+			// Move up
+			m_pendingMove = sf::Vector2i(0, -1);
+			m_sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandUp.png"));
 		}
 		else if (_gameEvent.key.code == sf::Keyboard::A)
 		{
-			//It was A
-			//Move left
-			AttemptMove(sf::Vector2i(-1, 0));
+			// It was A!
+			// Move left
+			m_pendingMove = sf::Vector2i(-1, 0);
+			m_sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandLeft.png"));
 		}
 		else if (_gameEvent.key.code == sf::Keyboard::S)
 		{
-			//It was S
-			//Move down
-			AttemptMove(sf::Vector2i(0, 1));
+			// It was S!
+			// Move down
+			m_pendingMove = sf::Vector2i(0, 1);
+			m_sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandDown.png"));
 		}
 		else if (_gameEvent.key.code == sf::Keyboard::D)
 		{
-			//It was D
-			//Move right
-			AttemptMove(sf::Vector2i(1, 0));
+			// It was D!
+			// Move right
+			m_pendingMove = sf::Vector2i(1, 0);
+			m_sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandRight.png"));
 		}
 	}
 }
+
+void Player::Update(sf::Time _frameTime)
+{
+	// If we have movement waiting to be processed,
+	if (m_pendingMove.x != 0 || m_pendingMove.y != 0)
+	{
+		// move in that direction
+		AttemptMove(m_pendingMove);
+
+		// and clear the pending movement
+		m_pendingMove = sf::Vector2i(0, 0);
+	}
+}
+
 
 bool Player::AttemptMove(sf::Vector2i _direction)
 {
