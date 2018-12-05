@@ -256,3 +256,19 @@ bool Level::MoveObjectTo(GridObject * _toMove, sf::Vector2i _targetPos)
 	//return failure
 	return false;
 }
+
+std::vector<GridObject*> Level::getObjectAt(sf::Vector2i _targetPos)
+{
+	//Don't trust the data
+	//Make sure the co-ords are within the vector size
+	if (_targetPos.y >= 0 && _targetPos.y < m_contents.size()
+		&& _targetPos.x >= 0 && _targetPos.x < m_contents[_targetPos.y].size())
+	{
+		//Get the contents
+		return m_contents[_targetPos.y][_targetPos.x];
+	}
+
+	//Default return
+	return std::vector<GridObject*>(); //return an empty vector with nothing in it (default constructor)
+
+}

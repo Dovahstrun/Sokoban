@@ -8,7 +8,7 @@ Player::Player()
 	,m_footstep()
 {
 	m_sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandDown.png"));
-	m_footstep.setBuffer(AssetManager::GetSoundBuffer("audio/footstep3.ogg"));
+	m_footstep.setBuffer(AssetManager::GetSoundBuffer("audio/footstep1.ogg"));
 }
 
 void Player::Input(sf::Event _gameEvent)
@@ -75,8 +75,26 @@ bool Player::AttemptMove(sf::Vector2i _direction)
 	sf::Vector2i targetPos = m_gridPosition + _direction;
 
 	//TODO: Check if the space is empty
+	//Get list of objects in target position (targetpos)
+	std::vector<GridObject*> targetCellContents = m_level->getObjectAt(targetPos);
+	//Check if any of those objects block movement
+	bool blocked = false;
+	for (int i = 0; i < targetCellContents.size(); ++i)
+	{
+		if (targetCellContents[i]->getBlocksMovement() == true)
+		{
+			blocked = true;
+		}
+	}
 
 	//If empty move there
 	m_footstep.play();
-	return m_level->MoveObjectTo(this, targetPos);
+
+	if (!blocked)
+	{
+		return m_level->MoveObjectTo(this, targetPos);
+	}
+
+	//If movement is blocked, do nothing, return false
+	return false;
 }
