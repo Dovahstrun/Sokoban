@@ -5,8 +5,10 @@
 
 Player::Player()
 	: GridObject()
+	,m_footstep()
 {
 	m_sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandDown.png"));
+	m_footstep.setBuffer(AssetManager::GetSoundBuffer("audio/footstep3.ogg"));
 }
 
 void Player::Input(sf::Event _gameEvent)
@@ -75,5 +77,6 @@ bool Player::AttemptMove(sf::Vector2i _direction)
 	//TODO: Check if the space is empty
 
 	//If empty move there
+	m_footstep.play();
 	return m_level->MoveObjectTo(this, targetPos);
 }
