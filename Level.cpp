@@ -9,6 +9,7 @@
 #include "Wall.h"
 #include "Storage.h"
 #include "Player.h"
+#include "Box.h"
 
 Level::Level()
 	: m_cellSize(64.0f)
@@ -186,6 +187,13 @@ void Level::loadLevel(int _levelToLoad)
 				player->setLevel(this);
 				player->setGridPosition(x, y);
 				m_contents[y][x].push_back(player);
+			}
+			else if (ch == 'B')
+			{
+				Box* box = new Box();
+				box->setLevel(this);
+				box->setGridPosition(x, y);
+				m_contents[y][x].push_back(box);
 			}
 			else
 			{

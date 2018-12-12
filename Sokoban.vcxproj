@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Framework\Sources\Animation.cpp" />
     <ClCompile Include="Framework\Sources\AnimationSystem.cpp" />
     <ClCompile Include="Framework\Sources\AssetManager.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Box.h" />
     <ClInclude Include="Framework\Headers\Animation.h" />
     <ClInclude Include="Framework\Headers\AnimationSystem.h" />
     <ClInclude Include="Framework\Headers\AssetManager.h" />
