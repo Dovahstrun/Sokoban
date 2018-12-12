@@ -11,6 +11,8 @@ public:
 
 	Box();
 
+	bool AttemptPush(sf::Vector2i _direction);
+
 private:
 
 

@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Framework/Headers/AssetManager.h"
 #include "Level.h"
+#include "Box.h"
 
 Player::Player()
 	: GridObject()
@@ -70,22 +71,24 @@ void Player::Update(sf::Time _frameTime)
 
 bool Player::AttemptMove(sf::Vector2i _direction)
 {
-	//Attempt to move in the given direction
+	///Attempt to move in the given direction
 
 	//Get your current position
 	//Calculate target position
 	sf::Vector2i targetPos = m_gridPosition + _direction;
 
-	//TODO: Check if the space is empty
+	//Check if the space is empty
 	//Get list of objects in target position (targetpos)
 	std::vector<GridObject*> targetCellContents = m_level->getObjectAt(targetPos);
 	//Check if any of those objects block movement
 	bool blocked = false;
+	GridObject* blocker = nullptr;
 	for (int i = 0; i < targetCellContents.size(); ++i)
 	{
 		if (targetCellContents[i]->getBlocksMovement() == true)
 		{
 			blocked = true;
+			blocker = targetCellContents[i];
 			
 		}
 	}
@@ -96,6 +99,28 @@ bool Player::AttemptMove(sf::Vector2i _direction)
 	if (!blocked)
 	{
 		return m_level->MoveObjectTo(this, targetPos);
+	}
+	else
+	{
+		//We were blocked!
+
+		//Can we push the thing blocking us?
+		//Do a dynamic cast to a box to see if we can push it
+		Box* pushableBox = dynamic_cast<Box*>(blocker);
+
+		//If so, attempt to push (the blocker is a box, not nullptr)
+		if (pushableBox != nullptr)
+		{
+			bool pushSucceeded = pushableBox->AttemptPush(_direction);
+
+			//If push succeeded 
+			if (pushSucceeded)
+			{
+				//Move to new spot (where blocker was)
+				return m_level->MoveObjectTo(this, targetPos);
+			}
+		}
+		
 	}
 
 	//If movement is blocked, do nothing, return false
