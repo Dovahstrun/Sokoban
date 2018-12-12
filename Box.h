@@ -15,6 +15,6 @@ public:
 
 private:
 
-
+	sf::Sound m_pushed;
 
 };

@@ -4,9 +4,11 @@
 
 Box::Box()
 	: GridObject()
+	, m_pushed()
 {
 	m_sprite.setTexture(AssetManager::GetTexture("graphics/Box.png"));
 	m_blocksMovement = true;
+	m_pushed.setBuffer(AssetManager::GetSoundBuffer("audio/push.wav"));
 }
 
 bool Box::AttemptPush(sf::Vector2i _direction)
@@ -32,10 +34,11 @@ bool Box::AttemptPush(sf::Vector2i _direction)
 	}
 
 	//If empty move there
-	//m_footstep.play();
+	
 
 	if (!blocked)
 	{
+		m_pushed.play();
 		return m_level->MoveObjectTo(this, targetPos);
 	}
 
