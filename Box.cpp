@@ -64,6 +64,9 @@ bool Box::AttemptPush(sf::Vector2i _direction)
 					//We are stored
 					m_stored = true;
 					m_storeSound.play();
+
+					//check if the level is complete
+					m_level->checkComplete();
 				}
 			}
 
@@ -88,6 +91,6 @@ bool Box::AttemptPush(sf::Vector2i _direction)
 
 bool Box::getStored()
 {
-	return false;
+	return m_stored;
 }
 

@@ -14,6 +14,7 @@
 Level::Level()
 	: m_cellSize(64.0f)
 	, m_currentLevel(0)
+	, m_pendingLevel(0)
 	, m_background()
 	, m_contents()
 {
@@ -71,6 +72,16 @@ void Level::Update(sf::Time _frameTime)
 				m_contents[y][x][z]->Update(_frameTime);
 			}
 		}
+	}
+
+	//If there is a pending level waiting
+
+	if (m_pendingLevel != 0)
+	{
+		//Load it
+		loadLevel(m_pendingLevel);
+
+		m_pendingLevel = 0;
 	}
 }
 
@@ -215,6 +226,11 @@ void Level::ReloadLevel()
 	loadLevel(m_currentLevel);
 }
 
+void Level::LoadNextLevel()
+{
+	loadLevel(m_currentLevel + 1);
+}
+
 int Level::GetCurrentLevel()
 {
 	return m_currentLevel;
@@ -279,4 +295,43 @@ std::vector<GridObject*> Level::getObjectAt(sf::Vector2i _targetPos)
 	//Default return
 	return std::vector<GridObject*>(); //return an empty vector with nothing in it (default constructor)
 
+}
+
+bool Level::checkComplete()
+{
+	///Loop through an check all boxes to see if they are stored
+	for (int y = 0; y < m_contents.size(); ++y)
+		//rows
+	{
+		for (int x = 0; x < m_contents[y].size(); ++x)//cells
+		{
+			for (int z = 0; z < m_contents[y][x].size(); ++z) //Sticky outies (grid objects)
+			{
+				GridObject* thisObject = m_contents[y][x][z];
+
+				Box* boxObject = dynamic_cast<Box*>(thisObject);
+				if (boxObject != nullptr)
+				{
+					//It was a box
+					
+					//Is it stored
+					if (boxObject->getStored() == false)
+					{
+						return false;
+
+					}
+				}
+			}
+		}
+	};
+
+	//All boxes were stored so we completed the level
+
+	//TODO: Add victory music
+
+	//queue the next level tro load during the next update
+	//if we do it right away we get an access violation due to update still running
+	m_pendingLevel = m_currentLevel + 1;
+
+	//The level is complete so return true
 }
